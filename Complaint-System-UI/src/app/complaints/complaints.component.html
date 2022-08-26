@@ -1,0 +1,27 @@
+<!-- <div class="text-right text-secondary">{{user}}</div> -->
+<h2 class="text-info text-center">Complaint List</h2>
+<table class="table table-bordered table-striped text-center">
+    <thead>
+        <tr class="text-center">
+            <th>ID</th>
+            <th>SUBJECT</th>
+            <th>DETAIL</th>
+            <th>USER</th>
+            <th>IS RESOLVED</th>
+            <th>LAST UPDATE</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let cmp of complaints" class="text-center">
+            <td>{{cmp.id}}</td>
+            <td>{{cmp.subject}}</td>
+            <td>{{cmp.detail}}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+<!-- <a [hidden]="!isAdminLoggedIn" class="text-center" routerLink="/addproduct">
+    <button class="btn btn-info">ADD NEW COMPLAINT</button>&nbsp;
+</a> -->
