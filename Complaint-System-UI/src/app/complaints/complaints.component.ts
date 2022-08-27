@@ -9,11 +9,16 @@ import { Complaint } from '../model/complaint.module';
 })
 export class ComplaintsComponent implements OnInit {
 
-  complaints:Complaint[];
+  complaints:any[];
   constructor(private service:ComplaintService) { }
 
   ngOnInit(): void {
-    this.service.getAllComplaints().subscribe(coms=>this.complaints = coms);
+    this.service.getAllComplaints().subscribe({
+      next:(coms:any)=>{
+      console.log("Complaints : " + coms)
+      this.complaints = coms
+      console.log("Now Complaints : " + this.complaints)
+    }});
   }
 
 }

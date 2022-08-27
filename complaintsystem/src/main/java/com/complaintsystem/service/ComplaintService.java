@@ -23,6 +23,10 @@ public class ComplaintService {
 	public List<Complaint> getAllComplaints() {
 		return repo.findAll();
 	}
+	
+	public List<Complaint> getUserRoleComplaints(int userid) {
+		return repo.findAll();
+	}
 
 	public Complaint getComplaintById(int id) {
 		if (repo.findById(id).isPresent())

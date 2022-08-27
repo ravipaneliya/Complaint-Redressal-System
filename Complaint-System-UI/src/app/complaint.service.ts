@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class ComplaintService {
 
-  baseUrl:string="http://localhost:8082/user";
+  baseUrl:string="http://localhost:8082/complaint";
   
   constructor(private http:HttpClient) { }
 

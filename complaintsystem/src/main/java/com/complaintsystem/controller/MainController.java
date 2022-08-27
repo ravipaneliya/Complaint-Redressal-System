@@ -34,15 +34,18 @@ public class MainController {
 	ComplaintUpdateService compUpdateService;
 	
 	@PostMapping("/login")
-	public ResponseEntity<Object> authUser(@RequestParam String username,@RequestParam String password,@RequestParam String usertype) {
+	public User authUser(@RequestParam String username,@RequestParam String password,@RequestParam String usertype) {
 		System.out.println("Login Params : " + username + "_" + password + "_" + usertype);
-		User user = userService.authenticateUser(username, password, UserType.MANAGER);
+		UserType ut = UserType.CUSTOMER;
+		if(usertype.equalsIgnoreCase("MANAGER")) {
+			ut = UserType.MANAGER;
+		} else if(usertype.equalsIgnoreCase("ENGINEER")) {
+			ut = UserType.ENGINEER;
+		}
+		User user = userService.authenticateUser(username, password, ut);
 		System.out.println("User : " + user.toString());
 
-		if (user != null && user.getId() > 0)
-			return new ResponseEntity<Object>(user, HttpStatus.FOUND);
-		else
-			return new ResponseEntity<Object>("Invalid Username or Password...!!", HttpStatus.NOT_FOUND);
+		return user;
 	}
 
 	@GetMapping("/user")
@@ -100,9 +103,14 @@ public class MainController {
 			return new ResponseEntity<Object>("Error while adding complaint.", HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
-	@GetMapping("/complaint")
+	@GetMapping("/complaints")
 	public List<Complaint> getAllComplaints(){
 		return compService.getAllComplaints();
+	}
+	
+	@GetMapping("/complaint")
+	public List<Complaint> getUserRoleComplaints(@RequestParam int userid){
+		return compService.getUserRoleComplaints(userid);
 	}
 	
 	@GetMapping("/complaint/{id}")

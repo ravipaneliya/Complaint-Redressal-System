@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
       username: ['', Validators.required],
       password: ['',[Validators.required]]
     });
-    this.loginForm.controls['usertype'].setValue("USER");
+    this.loginForm.controls['usertype'].setValue("CUSTOMER");
   }
   get form() {
     return this.loginForm.controls;
@@ -41,20 +41,24 @@ export class LoginComponent implements OnInit {
       console.log(this.loginForm.controls['username'].value);
       console.log(this.loginForm.controls['password'].value);
 
+     
       this.service.loginUser(this.loginForm.controls['username'].value, this.loginForm.controls['password'].value, 
-      this.loginForm.controls['usertype'].value).subscribe((u:User)=> this.user = u);
-
-      console.log("Response : "+ this.user);
-      // if(this.user !== undefined && this.user.id > 0){
-      //   this.response = "Successfully Logged In..!";
-      //   sessionStorage.setItem("userid",this.user.id.toString());
-      //   sessionStorage.setItem("username",this.user.name);
-      //   sessionStorage.setItem("usertype",this.user.usertype.toString());
-      //   setTimeout(()=>{ this.router.navigate(['home']) }, 3000);
-      // } else {
-      //   this.response = "Invalid Username Password or Usertype..!";
-      // }
+      this.loginForm.controls['usertype'].value).subscribe({
+        next: (u:any)=> {
+        this.user = u;
+        if(this.user !== undefined && this.user.id > 0){
+          this.response = "Successfully Logged In..!";
+          sessionStorage.setItem("userid",this.user.id.toString());
+          sessionStorage.setItem("username",this.user.name);
+          sessionStorage.setItem("usertype",this.user.usertype.toString());
+          setTimeout(()=>{ this.router.navigate(['home']) }, 2000);
+        }
+      }, 
+      error:(err:any)=>{
+        this.response = "Login Error : " + err.toString();
+      }});
     }
   }
 
 }
+

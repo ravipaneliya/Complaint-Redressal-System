@@ -5,6 +5,6 @@ export class Complaint{
     subject:string;
     detail:string;
     user:User;
-    isResolved:boolean;
+    resolved:boolean;
     last_update:Date;
 }
