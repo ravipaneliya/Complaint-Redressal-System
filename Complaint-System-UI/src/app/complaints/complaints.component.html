@@ -1,27 +1,118 @@
 <!-- <div class="text-right text-secondary">{{user}}</div> -->
-<h2 class="text-info text-center">Complaint List</h2>
-<table class="table table-bordered table-striped text-center">
-    <thead>
-        <tr class="text-center">
-            <th>ID</th>
-            <th>SUBJECT</th>
-            <th>DETAIL</th>
-            <th>USER</th>
-            <th>IS RESOLVED</th>
-            <th>LAST UPDATE</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let cmp of complaints" class="text-center">
-            <td>{{cmp.id}}</td>
-            <td>{{cmp.subject}}</td>
-            <td>{{cmp.detail}}</td>
-            <td>{{cmp.user.name}}</td>
-            <td>{{cmp.resolved}}</td>
-            <td>{{cmp.last_update}}</td>
-        </tr>
-    </tbody>
-</table>
-<!-- <a [hidden]="!isAdminLoggedIn" class="text-center" routerLink="/addproduct">
-    <button class="btn btn-info">ADD NEW COMPLAINT</button>&nbsp;
-</a> -->
+<div *ngIf="usertype === 'CUSTOMER'">
+    <div class="form-group">
+        <label for="usr">SUBJECT</label>
+        <input type="text" class="form-control" [(ngModel)]="comSubject" required>
+        <label for="pwd">DETAILS</label>
+        <input type="password" class="form-control" [(ngModel)]="comDetail" required>
+    </div>
+    <a class="text-center" routerLink="/addcomplaint">
+        <button class="btn btn-info" (click)="addNewComplaint()">ADD NEW COMPLAINT</button>&nbsp;
+    </a>
+</div>
+<h2 class="text-info text-center">COMPLAINT LIST</h2>
+<div *ngIf="usertype === 'CUSTOMER'">
+    <table class="table table-bordered table-striped text-center">
+        <thead>
+            <tr class="text-center">
+                <th>ID</th>
+                <th>SUBJECT</th>
+                <th>DETAIL</th>
+                <th>USER</th>
+                <th>IS RESOLVED</th>
+                <th>COMPLAINT DATE</th>
+                <th>COMPLAINT REMARKS</th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let cmp of complaints">
+            <tr *ngIf="cmp.user.id === userid" class="text-center">
+                <td>{{cmp.id}}</td>
+                <td>{{cmp.subject}}</td>
+                <td>{{cmp.detail}}</td>
+                <td>{{cmp.user.name}}</td>
+                <td>{{cmp.resolved}}</td>
+                <td>{{cmp.last_update}}</td>
+                <td>
+                    <div *ngFor="let cu of complaintUpdate">
+                        <div *ngIf="cu.complaint.id === cmp.id" class="text-primary">
+                            - {{cu.user.name | uppercase}} ({{cu.user.phoneno}}) : {{cu.statusRemark}} : {{cu.last_update}}
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div *ngIf="usertype === 'MANAGER'">
+    <table class="table table-bordered table-striped text-center">
+        <thead>
+            <tr class="text-center">
+                <th>ID</th>
+                <th>SUBJECT</th>
+                <th>DETAIL</th>
+                <th>USER</th>
+                <th>IS RESOLVED</th>
+                <th>COMPLAINT DATE</th>
+                <th>COMPLAINT REMARKS</th>
+                <th>ACTION</th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let cmp of complaints">
+                <tr class="text-center">
+                    <td>{{cmp.id}}</td>
+                    <td>{{cmp.subject}}</td>
+                    <td>{{cmp.detail}}</td>
+                    <td>{{cmp.user.name}}</td>
+                    <td>{{cmp.resolved}}</td>
+                    <td>{{cmp.last_update}}</td>
+                    <td>
+                        <div *ngFor="let cu of complaintUpdate">
+                            <div *ngIf="cu.complaint.id === cmp.id" class="text-primary">
+                                - {{cu.user.name | uppercase}} ({{cu.user.phoneno}}) : {{cu.statusRemark}} : {{cu.last_update}}
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <select class="custom-select" name="engUsers" (change)='assignuser=$event.target.value'>
+                            <option *ngFor="let u of allengineers" value="{{u.id}}">{{u.name}}</option>
+                        </select>
+                        <button class="btn btn-primary" (click)="assignComplaint(cmp.id)">ASSIGN</button>       
+                    </td>
+                </tr>
+        </tbody>
+    </table>
+</div>
+<div *ngIf="usertype === 'ENGINEER'">
+    <table class="table table-bordered table-striped text-center">
+        <thead>
+            <tr class="text-center">
+                <th>ID</th>
+                <th>COMPLAINT ID</th>
+                <th>SUBJECT</th>
+                <th>DETAIL</th>
+                <th>USER</th>
+                <th>ASSIGN TO</th>
+                <th class="text-success">IS RESOLVED</th>
+                <th class="text-success">UPDATE REMARK</th>
+                <th class="text-success">ACTION</th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let cu of complaintUpdate">
+            <tr *ngIf="cu.user.id === userid" class="text-center">
+                    <td>{{cu.id}}</td>
+                    <td>{{cu.complaint.id}}</td>
+                    <td>{{cu.complaint.subject}}</td>
+                    <td>{{cu.complaint.detail}}</td>
+                    <td>{{cu.complaint.user.name}}</td>
+                    <td>{{cu.user.name}}</td>
+                    <td>
+                            YES <input type="radio" name="complaintStatus" value="true" (change)='isresolved=$event.target.value' id="flexRadioDefault1"><br>
+                            NO  <input type="radio" name="complaintStatus" value="false" (change)='isresolved=$event.target.value' id="flexRadioDefault2" checked>
+                    </td>
+                    <td><input type="text" [(ngModel)]="updateRemark" required></td>
+                    <td><button class="btn btn-primary" (click)="updateComplaint(cu.complaint.id)">Update Status</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

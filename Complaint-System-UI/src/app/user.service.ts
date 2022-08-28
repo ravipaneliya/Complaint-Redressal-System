@@ -12,6 +12,7 @@ export class UserService {
   constructor(private http:HttpClient) { }
 
   baseUrl:string="http://localhost:8082/user";
+  engineersUrl:string="http://localhost:8082/user/engineers";
 
   loginUrl:string="http://localhost:8082/login";
 
@@ -21,12 +22,17 @@ export class UserService {
     body = body.set('password', password);
     body = body.set('usertype', usertype);
 
-    return this.http.post<Object>(this.loginUrl,body);;
+    return this.http.post<Object>(this.loginUrl,body);
   }
 
   getAllUsers():Observable<User[]>{
-    return this.http.get<User[]>(this.baseUrl)
+    return this.http.get<User[]>(this.baseUrl);
   }
+
+  getAllEngineers():Observable<User[]>{
+    return this.http.get<User[]>(this.engineersUrl);
+  }
+
   getUserById(id:number):Observable<User>{
     return this.http.get<User>(this.baseUrl+"/"+id)
   }

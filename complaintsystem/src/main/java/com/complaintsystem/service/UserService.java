@@ -1,5 +1,6 @@
 package com.complaintsystem.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,16 @@ public class UserService {
 
 	public List<User> getAllUsers() {
 		return repo.findAll();
+	}
+	
+	public List<User> getAllEngineers() {
+		List<User> lu = new ArrayList<User>();
+		for(User u : repo.findAll()) {
+			if(u.getUsertype() == UserType.ENGINEER) {
+				lu.add(u);
+			}
+		}
+		return lu;
 	}
 
 	public User getUserById(int id) {

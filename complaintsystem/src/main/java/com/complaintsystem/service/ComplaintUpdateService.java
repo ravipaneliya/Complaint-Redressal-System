@@ -22,7 +22,7 @@ public class ComplaintUpdateService {
 		return compUpdate;
 	}
 
-	public List<ComplaintUpdates> getAllComplaintUpdatess() {
+	public List<ComplaintUpdates> getAllComplaintUpdates() {
 		return repo.findAll();
 	}
 

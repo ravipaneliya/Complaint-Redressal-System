@@ -36,13 +36,7 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.invalid)
       return;
     else {
-      // 
-      console.log(this.loginForm.controls['usertype'].value);
-      console.log(this.loginForm.controls['username'].value);
-      console.log(this.loginForm.controls['password'].value);
-
-     
-      this.service.loginUser(this.loginForm.controls['username'].value, this.loginForm.controls['password'].value, 
+     this.service.loginUser(this.loginForm.controls['username'].value, this.loginForm.controls['password'].value, 
       this.loginForm.controls['usertype'].value).subscribe({
         next: (u:any)=> {
         this.user = u;

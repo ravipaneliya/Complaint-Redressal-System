@@ -52,6 +52,11 @@ public class MainController {
 	public List<User> getAllUsers() {
 		return userService.getAllUsers();
 	}
+	
+	@GetMapping("/user/engineers")
+	public List<User> getAllEngineers() {
+		return userService.getAllEngineers();
+	}
 
 	@GetMapping("/user/{id}")
 	public ResponseEntity<Object> getUser(@PathVariable int id) {
@@ -103,13 +108,14 @@ public class MainController {
 			return new ResponseEntity<Object>("Error while adding complaint.", HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
-	@GetMapping("/complaints")
+	@GetMapping("/complaint")
 	public List<Complaint> getAllComplaints(){
 		return compService.getAllComplaints();
 	}
 	
-	@GetMapping("/complaint")
-	public List<Complaint> getUserRoleComplaints(@RequestParam int userid){
+	@GetMapping("/complaints/{userid}")
+	public List<Complaint> getUserRoleComplaints(@PathVariable int userid){
+		System.out.println("Request User ID : " + userid);
 		return compService.getUserRoleComplaints(userid);
 	}
 	
@@ -140,7 +146,7 @@ public class MainController {
 	
 	@GetMapping("/complaint/update")
 	public List<ComplaintUpdates> getAllComplaintUpdates(){
-		return compUpdateService.getAllComplaintUpdatess();
+		return compUpdateService.getAllComplaintUpdates();
 	}
 	
 	
