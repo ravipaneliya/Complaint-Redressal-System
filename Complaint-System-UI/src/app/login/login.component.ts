@@ -15,10 +15,15 @@ export class LoginComponent implements OnInit {
   submitted: boolean = false;
   user:User;
   response:string = "";
+
+  userid:number = Number(sessionStorage.getItem("userid"));
   
   constructor(private builder: FormBuilder, private router:Router,private service:UserService) { }
 
   ngOnInit(): void {
+    if(this.userid != null && this.userid > 0){
+      this.router.navigate(['home']);
+    }
     this.loginForm = this.builder.group({
       usertype: ['', Validators.required],
       username: ['', Validators.required],
@@ -45,7 +50,11 @@ export class LoginComponent implements OnInit {
           sessionStorage.setItem("userid",this.user.id.toString());
           sessionStorage.setItem("username",this.user.name);
           sessionStorage.setItem("usertype",this.user.usertype.toString());
-          setTimeout(()=>{ this.router.navigate(['home']) }, 2000);
+          setTimeout(()=>{ 
+            this.router.navigate(['home']) 
+            window.location.reload()
+          }, 1000);
+          
         }
       }, 
       error:(err:any)=>{

@@ -63,20 +63,23 @@ export class ComplaintsComponent implements OnInit {
     
     this.service.addNewComplain(newcomp).subscribe({
       complete:()=>{
-        // this.router.navigate(['complaints']);
         window.location.reload();
       }
     });
   }
 
   assignComplaint(complaintid:number){
-    console.log("Assign Complaint : " + complaintid);
-    console.log("User ID : " + this.assignuser);
-    
     let compUpdate:ComplaintUpdate = this.getComplaintUpdateObject(complaintid);
+
+    let us:User = new User();
+    us.id = Number(this.assignuser);
+
+    compUpdate.user = us;
     compUpdate.isResolved = false;
     compUpdate.isWorkingOn = true;
-    compUpdate.statusRemark = this.updateRemark;
+    compUpdate.statusRemark = "Assigned to Engineer";
+
+    this.submitComplaintUpdate(compUpdate);
   }
 
   updateComplaint(complaintid:number){
@@ -88,11 +91,13 @@ export class ComplaintsComponent implements OnInit {
     compUpdate.isResolved = resolved;
     compUpdate.isWorkingOn = !resolved;
     compUpdate.statusRemark = this.updateRemark;
+
+    this.submitComplaintUpdate(compUpdate);
   }
 
   submitComplaintUpdate(comUpdate:ComplaintUpdate){
     this.service.addComplaintUpdate(comUpdate).subscribe({
-      complete:() => this.router.navigate(['complaints'])
+      complete:() => window.location.reload()
     });
   }
 

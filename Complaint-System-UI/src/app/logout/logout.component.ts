@@ -10,9 +10,14 @@ export class LogoutComponent implements OnInit {
 
   constructor(private router:Router) { }
 
+  userid:number = Number(sessionStorage.getItem("userid"));
+
   ngOnInit(): void {
     sessionStorage.clear()
-    setTimeout(()=>{ this.router.navigate(['home']) }, 3000);
+    if(this.userid != null && this.userid > 0){
+      window.location.reload()
+    }
+    setTimeout(()=>{ this.router.navigate(['home']) }, 2000);
   }
 
 }
