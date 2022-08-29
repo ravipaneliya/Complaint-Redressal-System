@@ -58,7 +58,7 @@ export class LoginComponent implements OnInit {
         }
       }, 
       error:(err:any)=>{
-        this.response = "Login Error : " + err.toString();
+        this.response = "Login Error : Invalid Username, Password or Usertype.." + err.toString();
       }});
     }
   }
